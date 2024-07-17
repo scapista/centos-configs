@@ -44,6 +44,14 @@
           "source": "data:;base64,IyEvYmluL2Jhc2gKZWNobyAiRGV0ZWN0ZWQgUHVibGljIElQdjQ6IGlzICQoY3VybCBodHRwczovL2lwdjQuaWNhbmhhemlwLmNvbSkiID4gXAogICAgL2V0Yy9pc3N1ZS5kLzUwX3B1YmxpYy1pcHY0Lmlzc3Vl"
         },
         "mode": 493
+      },
+      {
+        "path": "/etc/NetworkManager/system-connections/${interface}.nmconnection",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/1SMwWrFIBBF9/MdLiul0F3xS0IWg16rEEfRadog/nsJtA/e7nDP5Wy+isBrrrJTDs7MLIoe2WORXg0OmtAFSg9hhQuen1tu5/tOHELHGG+3bOvVzNYR8896MfOTFd98LQrJN5vq0L/KPy4KMpyZNw/0E3193JMd4O6To8KXjZwPF/kYoAJNNbjC8sUH/QYAAP//ADLNScgAAAA="
+        },
+        "mode": 384
       }
     ]
   },

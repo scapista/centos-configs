@@ -33,3 +33,18 @@ storage:
       mode: 0755
       contents:
         local: public-ipv4.sh
+    - path: /etc/NetworkManager/system-connections/${interface}.nmconnection
+      mode: 0600
+      contents:
+        inline: |
+          [connection]
+          id=${interface}
+          type=ethernet
+          interface-name=${interface}
+          [ipv4]
+          address1=${ip}/${prefix},${gateway}
+          dhcp-hostname=${hostname}
+          dns=${nameserver};
+          dns-search=
+          may-fail=false
+          method=manual
