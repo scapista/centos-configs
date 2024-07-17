@@ -1,0 +1,35 @@
+variant: fcos
+version: 1.5.0
+passwd:
+  users:
+    - name: scapista
+      groups: 
+        - sudo
+        - docker
+        - root
+        - adm
+      ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCe6UjiWrmn6/DblNlfamwH94VcY3t8GWll7RjJ/7efOzBrFz2UOCKOk+0ESKPaiNoYdK8Gj7PWrfWX2H/0yWrm+IA1afbJbAXKZB/jcUwraopoCctfgBqfOXnKZPGVjM9pseOMsPbexpWWmNqrDWToCCBlGGEdo65bQPfstAlOao1nKnsP37JDu/g54PZsDDoAOsMU5r5nRgQ3YYwj2T0OWhIxBOm4f3zg8AyiPU9rB945KAVwvK42PAqidur50M7zkynhEpXAEzLAKGlp0e/0jwEgQlcfdvuoNB5K6yskjBeesxEix4t5Zz7KbGWqsFIWOBDEBcALpKXYTDkXFa6BL1Rfuy9qZDnNgvxwRoahDEyjfOiTV1WSh3+WWwGtUCYlpHRLT74EOidBkKekcZ+LcLhPuMHchaO++iHbVJBF2s5ujpTvqeVD+XoEotwkoKpCs3rFLtO/yxPAxajKhgIwa5AHyqbgCxORk+RIJv/XLpyBd7Z4JuxWN7x6fn26zgPYIi+zFZZClhpRXtvAUiZJnP1YHnkc8W9pDhtW/7nw1ZrWF2FVE+Zdca1EHI6jm7TzKxZtACplmEQWu5Mn166inLUfPR/+TBGz13wV52mD8oxsoHBpbdglwSYcT7eS166FPtC352uOnlQhSpwnPrHlD+DZhwOjnbbuouMvGykxXQ== scapista
+      password_hash: $y$j9T$CJkxODHkqctH0aZIC3E2u0$dWdspynhAHyxdD9h2BB5nyw1jhOklwYjPxZxjNqAgmD
+systemd:
+  units:
+    - name: issuegen-public-ipv4.service
+      enabled: true
+      contents_local: issuegen-public-ipv4.service
+storage:
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: |
+          homelab
+    - path: /etc/profile.d/systemd-pager.sh
+      mode: 0644
+      contents:
+        inline: |
+          # Tell systemd to not use a pager when printing information
+          export SYSTEMD_PAGER=cat
+    - path: /usr/local/bin/public-ipv4.sh
+      mode: 0755
+      contents:
+        local: public-ipv4.sh

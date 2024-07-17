@@ -1,0 +1,59 @@
+{
+  "ignition": {
+    "version": "3.4.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "groups": [
+          "sudo",
+          "docker",
+          "root",
+          "adm"
+        ],
+        "name": "scapista",
+        "passwordHash": "$y$j9T$CJkxODHkqctH0aZIC3E2u0$dWdspynhAHyxdD9h2BB5nyw1jhOklwYjPxZxjNqAgmD",
+        "sshAuthorizedKeys": [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCe6UjiWrmn6/DblNlfamwH94VcY3t8GWll7RjJ/7efOzBrFz2UOCKOk+0ESKPaiNoYdK8Gj7PWrfWX2H/0yWrm+IA1afbJbAXKZB/jcUwraopoCctfgBqfOXnKZPGVjM9pseOMsPbexpWWmNqrDWToCCBlGGEdo65bQPfstAlOao1nKnsP37JDu/g54PZsDDoAOsMU5r5nRgQ3YYwj2T0OWhIxBOm4f3zg8AyiPU9rB945KAVwvK42PAqidur50M7zkynhEpXAEzLAKGlp0e/0jwEgQlcfdvuoNB5K6yskjBeesxEix4t5Zz7KbGWqsFIWOBDEBcALpKXYTDkXFa6BL1Rfuy9qZDnNgvxwRoahDEyjfOiTV1WSh3+WWwGtUCYlpHRLT74EOidBkKekcZ+LcLhPuMHchaO++iHbVJBF2s5ujpTvqeVD+XoEotwkoKpCs3rFLtO/yxPAxajKhgIwa5AHyqbgCxORk+RIJv/XLpyBd7Z4JuxWN7x6fn26zgPYIi+zFZZClhpRXtvAUiZJnP1YHnkc8W9pDhtW/7nw1ZrWF2FVE+Zdca1EHI6jm7TzKxZtACplmEQWu5Mn166inLUfPR/+TBGz13wV52mD8oxsoHBpbdglwSYcT7eS166FPtC352uOnlQhSpwnPrHlD+DZhwOjnbbuouMvGykxXQ== scapista"
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "files": [
+      {
+        "path": "/etc/hostname",
+        "contents": {
+          "compression": "",
+          "source": "data:,homelab%0A"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/profile.d/systemd-pager.sh",
+        "contents": {
+          "compression": "",
+          "source": "data:,%23%20Tell%20systemd%20to%20not%20use%20a%20pager%20when%20printing%20information%0Aexport%20SYSTEMD_PAGER%3Dcat%0A"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/usr/local/bin/public-ipv4.sh",
+        "contents": {
+          "compression": "",
+          "source": "data:;base64,IyEvYmluL2Jhc2gKZWNobyAiRGV0ZWN0ZWQgUHVibGljIElQdjQ6IGlzICQoY3VybCBodHRwczovL2lwdjQuaWNhbmhhemlwLmNvbSkiID4gXAogICAgL2V0Yy9pc3N1ZS5kLzUwX3B1YmxpYy1pcHY0Lmlzc3Vl"
+        },
+        "mode": 493
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nBefore=systemd-user-sessions.service\nWants=network-online.target\nAfter=network-online.target\nConditionPathExists=!/var/lib/issuegen-public-ipv4\n\n[Service]\nType=oneshot\nExecStart=/usr/local/bin/public-ipv4.sh\nExecStartPost=/usr/bin/touch /var/lib/issuegen-public-ipv4\nRemainAfterExit=yes\n\n[Install]\nWantedBy=multi-user.target",
+        "enabled": true,
+        "name": "issuegen-public-ipv4.service"
+      }
+    ]
+  }
+}
