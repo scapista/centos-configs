@@ -1,14 +1,10 @@
 version: 1.5.0
 variant: fcos
 storage:
-  disks:
-    - device: /dev/sdb
-      wipe_table: false
   filesystems:
     - path: /appdata
       device: /dev/sdb
       format: ext4
-      with_mount_unit: true
       wipe_filesystem: true
   directories:
     - path: /appdata/media
@@ -42,18 +38,3 @@ passwd:
       groups:
         - sudo
       home_dir: /home/scapista
-systemd:
-  units:
-    - name: jellyfin.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=Jellyfin Media Server
-        After=network-online.target
-
-        [Service]
-        ExecStart=/usr/bin/podman run --name jellyfin -d -p 8096:8096 -v /appdata/media:/media jellyfin/jellyfin
-        Restart=always
-
-        [Install]
-        WantedBy=multi-user.target
