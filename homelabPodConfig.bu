@@ -5,7 +5,7 @@ storage:
     - path: /appdata
       device: /dev/sdb
       format: ext4
-      wipe_filesystem: false
+      ##wipe_filesystem: false
   directories:
     - path: /appdata/media
       mode: 0755

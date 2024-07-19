@@ -54,8 +54,7 @@
       {
         "device": "/dev/sdb",
         "format": "ext4",
-        "path": "/appdata",
-        "wipeFilesystem": false
+        "path": "/appdata"
       }
     ]
   },
