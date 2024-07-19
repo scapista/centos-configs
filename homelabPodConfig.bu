@@ -1,11 +1,15 @@
 version: 1.5.0
 variant: fcos
 storage:
+  disks:
+  - device: /dev/sdb
+    wipe_table: false
   filesystems:
     - path: /appdata
       device: /dev/sdb
       format: ext4
-      ##wipe_filesystem: false
+      with_mount_unit: true
+      wipe_filesystem: true
   directories:
     - path: /appdata/media
       mode: 0755
@@ -49,32 +53,6 @@ systemd:
 
         [Service]
         ExecStart=/usr/bin/podman run --name jellyfin -d -p 8096:8096 -v /appdata/media:/media jellyfin/jellyfin
-        Restart=always
-
-        [Install]
-        WantedBy=multi-user.target
-    - name: magicmirror.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=MagicMirror
-        After=network-online.target
-
-        [Service]
-        ExecStart=/usr/bin/podman run --name magicmirror -d -p 8080:8080 -v /appdata/magicmirror:/magicmirror bastilimbach/docker-magicmirror
-        Restart=always
-
-        [Install]
-        WantedBy=multi-user.target
-    - name: wastebin.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=Wastebin
-        After=network-online.target
-
-        [Service]
-        ExecStart=/usr/bin/podman run --name wastebin -d -p 8000:8000 -v /appdata/wastebin:/wastebin matze/wastebin
         Restart=always
 
         [Install]
