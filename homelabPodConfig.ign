@@ -24,6 +24,10 @@
         "mode": 493
       },
       {
+        "path": "/appdata/media/movies",
+        "mode": 493
+      },
+      {
         "path": "/appdata/wastebin",
         "mode": 493
       },

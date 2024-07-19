@@ -9,6 +9,8 @@ storage:
   directories:
     - path: /appdata/media
       mode: 0755
+    - path: /appdata/media/movies
+      mode: 0755
     - path: /appdata/wastebin
       mode: 0755
     - path: /appdata/magicmirror
