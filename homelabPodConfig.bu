@@ -2,8 +2,8 @@ version: 1.5.0
 variant: fcos
 storage:
   disks:
-  - device: /dev/sdb
-    wipe_table: false
+    - device: /dev/sdb
+      wipe_table: false
   filesystems:
     - path: /appdata
       device: /dev/sdb
