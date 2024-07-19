@@ -75,11 +75,6 @@
         "contents": "[Unit]\nDescription=Wastebin\nAfter=network-online.target\n\n[Service]\nExecStart=/usr/bin/podman run --name wastebin -d -p 8000:8000 -v /appdata/wastebin:/wastebin matze/wastebin\nRestart=always\n\n[Install]\nWantedBy=multi-user.target\n",
         "enabled": true,
         "name": "wastebin.service"
-      },
-      {
-        "contents": "[Unit]\nDescription=MongoDB\nAfter=network-online.target\n\n[Service]\nExecStart=/usr/bin/podman run --name mongodb -d -p 27017:27017 -v /appdata/data:/data/db mongo\nRestart=always\n\n[Install]\nWantedBy=multi-user.target\n",
-        "enabled": true,
-        "name": "mongodb.service"
       }
     ]
   }

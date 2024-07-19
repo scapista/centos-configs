@@ -79,16 +79,3 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target
-    - name: mongodb.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=MongoDB
-        After=network-online.target
-
-        [Service]
-        ExecStart=/usr/bin/podman run --name mongodb -d -p 27017:27017 -v /appdata/data:/data/db mongo
-        Restart=always
-
-        [Install]
-        WantedBy=multi-user.target
