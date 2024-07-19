@@ -1,0 +1,18 @@
+sudo mkdir -p /srv/jellyfin/{config,cache}
+
+podman run \
+ --detach \
+ --label "io.containers.autoupdate=registry" \
+ --name myjellyfin \
+ --publish 8096:8096/tcp \
+ --rm \
+ --user $(id -u):$(id -g) \
+ --userns keep-id \
+ --volume /var/home/scapista/cache:/cache:Z \
+ --volume /var/home/scapista/config:/config:Z \
+ --volume /var/home/scapista/media:/media:Z \
+ docker.io/jellyfin/jellyfin:latest
+
+
+sudo firewall-cmd --add-port=8096/tcp --permanent
+sudo firewall-cmd --reload

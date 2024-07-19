@@ -1,0 +1,82 @@
+{
+  "ignition": {
+    "version": "3.4.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "groups": [
+          "sudo"
+        ],
+        "homeDir": "/home/scapista",
+        "name": "scapista",
+        "passwordHash": "$y$j9T$CJkxODHkqctH0aZIC3E2u0$dWdspynhAHyxdD9h2BB5nyw1jhOklwYjPxZxjNqAgmD",
+        "sshAuthorizedKeys": [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCe6UjiWrmn6/DblNlfamwH94VcY3t8GWll7RjJ/7efOzBrFz2UOCKOk+0ESKPaiNoYdK8Gj7PWrfWX2H/0yWrm+IA1afbJbAXKZB/jcUwraopoCctfgBqfOXnKZPGVjM9pseOMsPbexpWWmNqrDWToCCBlGGEdo65bQPfstAlOao1nKnsP37JDu/g54PZsDDoAOsMU5r5nRgQ3YYwj2T0OWhIxBOm4f3zg8AyiPU9rB945KAVwvK42PAqidur50M7zkynhEpXAEzLAKGlp0e/0jwEgQlcfdvuoNB5K6yskjBeesxEix4t5Zz7KbGWqsFIWOBDEBcALpKXYTDkXFa6BL1Rfuy9qZDnNgvxwRoahDEyjfOiTV1WSh3+WWwGtUCYlpHRLT74EOidBkKekcZ+LcLhPuMHchaO++iHbVJBF2s5ujpTvqeVD+XoEotwkoKpCs3rFLtO/yxPAxajKhgIwa5AHyqbgCxORk+RIJv/XLpyBd7Z4JuxWN7x6fn26zgPYIi+zFZZClhpRXtvAUiZJnP1YHnkc8W9pDhtW/7nw1ZrWF2FVE+Zdca1EHI6jm7TzKxZtACplmEQWu5Mn166inLUfPR/+TBGz13wV52mD8oxsoHBpbdglwSYcT7eS166FPtC352uOnlQhSpwnPrHlD+DZhwOjnbbuouMvGykxXQ=="
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "directories": [
+      {
+        "path": "/appdata/media",
+        "mode": 493
+      },
+      {
+        "path": "/appdata/wastebin",
+        "mode": 493
+      },
+      {
+        "path": "/appdata/magicmirror",
+        "mode": 493
+      },
+      {
+        "path": "/appdata/data",
+        "mode": 493
+      }
+    ],
+    "files": [
+      {
+        "path": "/etc/systemd/network/00-ens3.network",
+        "contents": {
+          "compression": "",
+          "source": "data:,%5BMatch%5D%0AName%3Dens3%0A%0A%5BNetwork%5D%0AAddress%3D192.168.50.94%2F24%0AGateway%3D192.168.50.1%0ADNS%3D192.168.50.1%0A"
+        },
+        "mode": 420
+      }
+    ],
+    "filesystems": [
+      {
+        "device": "/dev/sdb",
+        "format": "ext4",
+        "path": "/appdata",
+        "wipeFilesystem": false
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nDescription=Jellyfin Media Server\nAfter=network-online.target\n\n[Service]\nExecStart=/usr/bin/podman run --name jellyfin -d -p 8096:8096 -v /appdata/media:/media jellyfin/jellyfin\nRestart=always\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "jellyfin.service"
+      },
+      {
+        "contents": "[Unit]\nDescription=MagicMirror\nAfter=network-online.target\n\n[Service]\nExecStart=/usr/bin/podman run --name magicmirror -d -p 8080:8080 -v /appdata/magicmirror:/magicmirror bastilimbach/docker-magicmirror\nRestart=always\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "magicmirror.service"
+      },
+      {
+        "contents": "[Unit]\nDescription=Wastebin\nAfter=network-online.target\n\n[Service]\nExecStart=/usr/bin/podman run --name wastebin -d -p 8000:8000 -v /appdata/wastebin:/wastebin matze/wastebin\nRestart=always\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "wastebin.service"
+      },
+      {
+        "contents": "[Unit]\nDescription=MongoDB\nAfter=network-online.target\n\n[Service]\nExecStart=/usr/bin/podman run --name mongodb -d -p 27017:27017 -v /appdata/data:/data/db mongo\nRestart=always\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "mongodb.service"
+      }
+    ]
+  }
+}

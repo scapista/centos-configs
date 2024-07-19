@@ -1,0 +1,92 @@
+version: 1.5.0
+variant: fcos
+storage:
+  filesystems:
+    - path: /appdata
+      device: /dev/sdb
+      format: ext4
+      wipe_filesystem: false
+  directories:
+    - path: /appdata/media
+      mode: 0755
+    - path: /appdata/wastebin
+      mode: 0755
+    - path: /appdata/magicmirror
+      mode: 0755
+    - path: /appdata/data
+      mode: 0755
+  files:
+    - path: /etc/systemd/network/00-ens3.network
+      mode: 0644
+      contents:
+        inline: |
+          [Match]
+          Name=ens3
+
+          [Network]
+          Address=192.168.50.94/24
+          Gateway=192.168.50.1
+          DNS=192.168.50.1
+passwd:
+  users:
+    - name: scapista
+      password_hash: "$y$j9T$CJkxODHkqctH0aZIC3E2u0$dWdspynhAHyxdD9h2BB5nyw1jhOklwYjPxZxjNqAgmD"
+      ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCe6UjiWrmn6/DblNlfamwH94VcY3t8GWll7RjJ/7efOzBrFz2UOCKOk+0ESKPaiNoYdK8Gj7PWrfWX2H/0yWrm+IA1afbJbAXKZB/jcUwraopoCctfgBqfOXnKZPGVjM9pseOMsPbexpWWmNqrDWToCCBlGGEdo65bQPfstAlOao1nKnsP37JDu/g54PZsDDoAOsMU5r5nRgQ3YYwj2T0OWhIxBOm4f3zg8AyiPU9rB945KAVwvK42PAqidur50M7zkynhEpXAEzLAKGlp0e/0jwEgQlcfdvuoNB5K6yskjBeesxEix4t5Zz7KbGWqsFIWOBDEBcALpKXYTDkXFa6BL1Rfuy9qZDnNgvxwRoahDEyjfOiTV1WSh3+WWwGtUCYlpHRLT74EOidBkKekcZ+LcLhPuMHchaO++iHbVJBF2s5ujpTvqeVD+XoEotwkoKpCs3rFLtO/yxPAxajKhgIwa5AHyqbgCxORk+RIJv/XLpyBd7Z4JuxWN7x6fn26zgPYIi+zFZZClhpRXtvAUiZJnP1YHnkc8W9pDhtW/7nw1ZrWF2FVE+Zdca1EHI6jm7TzKxZtACplmEQWu5Mn166inLUfPR/+TBGz13wV52mD8oxsoHBpbdglwSYcT7eS166FPtC352uOnlQhSpwnPrHlD+DZhwOjnbbuouMvGykxXQ==
+      groups:
+        - sudo
+      home_dir: /home/scapista
+systemd:
+  units:
+    - name: jellyfin.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Jellyfin Media Server
+        After=network-online.target
+
+        [Service]
+        ExecStart=/usr/bin/podman run --name jellyfin -d -p 8096:8096 -v /appdata/media:/media jellyfin/jellyfin
+        Restart=always
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: magicmirror.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=MagicMirror
+        After=network-online.target
+
+        [Service]
+        ExecStart=/usr/bin/podman run --name magicmirror -d -p 8080:8080 -v /appdata/magicmirror:/magicmirror bastilimbach/docker-magicmirror
+        Restart=always
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: wastebin.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Wastebin
+        After=network-online.target
+
+        [Service]
+        ExecStart=/usr/bin/podman run --name wastebin -d -p 8000:8000 -v /appdata/wastebin:/wastebin matze/wastebin
+        Restart=always
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: mongodb.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=MongoDB
+        After=network-online.target
+
+        [Service]
+        ExecStart=/usr/bin/podman run --name mongodb -d -p 27017:27017 -v /appdata/data:/data/db mongo
+        Restart=always
+
+        [Install]
+        WantedBy=multi-user.target
