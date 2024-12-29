@@ -49,14 +49,6 @@
         },
         "mode": 420
       }
-    ],
-    "filesystems": [
-      {
-        "device": "/dev/sdb",
-        "format": "ext4",
-        "path": "/appdata",
-        "wipeFilesystem": true
-      }
     ]
   }
 }
