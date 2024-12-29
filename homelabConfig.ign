@@ -20,6 +20,28 @@
     ]
   },
   "storage": {
+    "directories": [
+      {
+        "path": "/appdata/media",
+        "mode": 493
+      },
+      {
+        "path": "/appdata/media/movies",
+        "mode": 493
+      },
+      {
+        "path": "/appdata/wastebin",
+        "mode": 493
+      },
+      {
+        "path": "/appdata/magicmirror",
+        "mode": 493
+      },
+      {
+        "path": "/appdata/data",
+        "mode": 493
+      }
+    ],
     "files": [
       {
         "path": "/etc/hostname",
